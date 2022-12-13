@@ -1,0 +1,84 @@
+# RTH Workbench API Examples Springboard
+
+## Welcome
+
+Welcome to the RTH Python Medusa API Examples Springboard.
+
+This Springboard provides a Jupyter Notebook that shows a range of API calls that can be made using our Medusa2
+Python Client library to various backend data sources that the Refinitiv Tick History Workbench supports.
+
+As a reminder, the Medusa2 Python client supports the following backend Data Sources:
+
+* "Heritage" MayStreet Data Lake (`foundation`)
+* Refinitiv Tick History (`rth`)
+* Refinitiv Machine Readable News History (`mrn`)
+
+Help is automatically provided by the client library; the below example notebook contains documentation
+explaining how to access this information.
+
+## Data Sources
+
+### "Heritage" MayStreet Data Lake
+
+The "Heritage" MayStreet Data Lake data source contains data which has been converted from PCAPs via Parquet and then
+ingested into our AWS Athena data store nightly.
+
+This data source supports querying via SQL using
+the [Athena SQL Format](https://docs.aws.amazon.com/athena/latest/ug/ddl-sql-reference.html), as well as an increasing
+number of API client functions which we are adding.
+
+### Refinitiv Tick History
+
+The Refinitiv Tick History store is backed by Google BigQuery and contains tick history data grouped by venue.
+
+The data source supports querying via
+the [Google BigQuery Format](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax), as well as an
+increasing number of API client functions which we are adding.
+
+### Refinitiv Machine Readable News History
+
+The Refinitiv Machine Readable News Historyy store is backed by Google BigQuery and contains both raw news and
+sentiments.
+
+The data source supports querying via
+the [Google BigQuery Format](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax), as well as an
+increasing number of API client functions which we are adding.
+
+## Example API Calls
+
+A simple call to get data from our "Foundation" API looks like the following:
+
+```python
+from datetime import datetime, timedelta
+from pandas import DataFrame
+from json import dumps
+
+from maystreet_data.api_client import ApiClient, ProvidedApiClientOptions
+
+client = ApiClient()
+
+dt = '2020-01-02'
+product = 'AAPL'
+f = 'bats_edga'
+columns = ['f', 'dt', 'quantity']
+
+output_results = DataFrame(list(client.foundation.get_mt_trade(dt=dt, product=product, f=f, columns=columns)))
+output_results
+
+
+```
+
+## Notebooks
+
+### _[medusa-examples.ipynb](medusa-examples.ipynb)_
+
+This Notebook contains all examples, with each example in individual cells.
+
+To see everything work, open the notebook, and the click "Run All".
+
+Each individual cell can be run as well, but please ensure the first cell, which contains the import directives
+and the instantiation of the API, is run first.
+
+## Support
+
+For support, please email <support@maystreet.com>. Thank you.
